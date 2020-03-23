@@ -1,7 +1,7 @@
 {
-  "name": "boilermaker",
+  "name": "shelter-in-pets-server",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "A server for shelter-in-pets!",
   "engines": {
     "node": ">= 7.0.0"
   },
