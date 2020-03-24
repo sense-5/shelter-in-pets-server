@@ -1,11 +1,10 @@
 const User = require('./user')
-const FavoriteDogs = require('./favoriteDogs')
-const ViewedPets = require('./viewedPets')
+const Dog = require('./dog')
+const LikedDogs = require('./liked_dogs')
+const ViewedDogs = require('./viewed_dogs')
 
-User.hasOne(ViewedPets)
-ViewedPets.belongsTo(User)
+Dog.belongsToMany(User, {through: LikedDogs})
 
-User.hasOne(FavoriteDogs)
-FavoriteDogs.belongsTo(User)
+User.belongsToMany(Dog, {through: ViewedDogs})
 
-module.exports = {User, FavoriteDogs, ViewedPets}
+module.exports = {User, Dog}

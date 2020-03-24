@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, FavoriteDogs, ViewedPets} = require('../server/db/models')
+const {User, Dog, LikedDogs, ViewedDogs} = require('../server/db/models')
 const users = [
   {
     firstName: 'Alta',
@@ -755,6 +755,7 @@ const users = [
     zipcode: '12-160'
   }
 ]
+
 async function seed() {
   try {
     await db.sync({force: true})
