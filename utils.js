@@ -29,13 +29,20 @@ const isUser = (req, res, next) => {
 }
 
 const getToken = async (req, res, next) => {
-  const {data} = await axios.post('https://api.petfinder.com/v2/oauth2/token', {
-    grant_type: 'client_credentials',
-    client_id: process.env.PETFINDER_KEY,
-    client_secret: process.env.PETFINDER_SECRET
-  })
-  process.env.BEARER_TOKEN = 'Bearer '.concat(data.access_token)
-  next()
+  try {
+    const {data} = await axios.post(
+      'https://api.petfinder.com/v2/oauth2/token',
+      {
+        grant_type: 'client_credentials',
+        client_id: process.env.PETFINDER_KEY,
+        client_secret: process.env.PETFINDER_SECRET
+      }
+    )
+    process.env.BEARER_TOKEN = 'Bearer '.concat(data.access_token)
+    next()
+  } catch (error) {
+    next(error)
+  }
 }
 
 module.exports = {isAdmin, isUser, getToken}
