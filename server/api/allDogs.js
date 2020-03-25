@@ -12,7 +12,6 @@ router.get('/', getToken, async (req, res, next) => {
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
     res.json(data)
-    console.log('/api/dogs called')
   } catch (error) {
     next(error)
   }
@@ -23,6 +22,21 @@ router.get('/:dogId', getToken, async (req, res, next) => {
   try {
     const {data} = await axios.get(
       `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// SHOW DOGS OF A BREED ROUTE: '/api/dogs/:breed
+router.get('/:breed', getToken, async (req, res, next) => {
+  try {
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&breed=${
+        req.params.breed
+      }`,
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
     res.json(data).status(200)
