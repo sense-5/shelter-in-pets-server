@@ -41,6 +41,14 @@ passport.deserializeUser(async (id, done) => {
 })
 
 const createApp = () => {
+  // cross origin resource sharing middleware
+  app.use((req, res, next) => {
+    // TODO: replace * with the mobile website url for this app.
+    res.append('Access-Control-Allow-Origin', ['*'])
+    console.log('test')
+    next()
+  })
+
   // logging middleware
   app.use(morgan('dev'))
 

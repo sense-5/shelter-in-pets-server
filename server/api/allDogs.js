@@ -11,8 +11,8 @@ router.get('/', getToken, async (req, res, next) => {
       'https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable',
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
-    console.log('get Data:', data)
     res.json(data)
+    console.log('/api/dogs called')
   } catch (error) {
     next(error)
   }
@@ -25,7 +25,6 @@ router.get('/:dogId', getToken, async (req, res, next) => {
       `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
-    console.log('get single dog data:', data)
     res.json(data).status(200)
   } catch (error) {
     next(error)
