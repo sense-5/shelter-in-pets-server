@@ -2,26 +2,18 @@ const router = require('express').Router()
 const {Dog, User} = require('../db/models')
 module.exports = router
 
-// LIKED DOGS ROUTE: '/api/likedDog
+// LIKED DOGS ROUTE: '/api/viewedDog
 
 // POST likedDog to database
 router.post('/', async (req, res, next) => {
-  console.log('in post api:', req.body)
+  console.log('in view post api:', req.body)
   //   console.log('user:', req.user.id)
   try {
-    let likedDog = await Dog.findOne({
-      where: {petFinderId: String(req.body.petFinderId)}
+    let viewedDog = await Dog.findOne({
+      where: {petFinderId: String(req.body.petFinderId), breed: req.body.breed}
     })
 
-    if (likedDog) {
-      await likedDog.update({liked: req.body.liked})
-    } else {
-      likedDog = await Dog.create({
-        petFinderId: String(req.body.petFinderId),
-        breed: req.body.breed
-      })
-    }
-    res.status(201).json(likedDog)
+    res.status(201).json(viewedDog)
     // const user = await User.findByPk(req.user.id)
     // if (user) {
     //   await newLikedDog.addUser(user)
