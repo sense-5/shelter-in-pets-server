@@ -33,13 +33,18 @@ router.post('/', async (req, res, next) => {
       return
     }
 
-    await user.addLikedDog(dog)
+    await dog.update({liked: !dog.liked})
 
     if (dog.liked) {
-      await dog.update({liked: false})
-    } else {
-      await dog.update({liked: true})
+      await user.addLikedDog(dog)
+      return
     }
+
+    if (!dog.liked) {
+      await user.removeLikedDog(dog)
+      return
+    }
+
     res.sendStatus(200)
     return
   } catch (error) {
