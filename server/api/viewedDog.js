@@ -19,7 +19,6 @@ router.post('/', async (req, res, next) => {
     })
 
     if (!dog) {
-      console.log('viewed dog test')
       let viewedDog = await Dog.create({
         petFinderId: String(req.body.petFinderId),
         breed: req.body.breed,
