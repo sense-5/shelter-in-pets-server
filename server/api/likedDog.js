@@ -7,27 +7,41 @@ module.exports = router
 // POST likedDog to database
 router.post('/', async (req, res, next) => {
   console.log('in post api:', req.body)
-  //   console.log('user:', req.user.id)
+  console.log('type user id', typeof req.user.id)
+  console.log(Object.keys(User.prototype))
+
   try {
-    let likedDog = await Dog.findOne({
-      where: {petFinderId: String(req.body.petFinderId)}
+    const user = await User.findByPk(req.user.id)
+
+    if (!user) {
+      res.status(404).json('User does not exist')
+      return
+    }
+
+    let dog = await Dog.findOne({
+      where: {petFinderId: String(req.body.petFinderId), userId: req.user.id}
     })
 
-    if (likedDog) {
-      await likedDog.update({liked: req.body.liked})
-    } else {
-      likedDog = await Dog.create({
+    if (!dog) {
+      let likedDog = await Dog.create({
         petFinderId: String(req.body.petFinderId),
-        breed: req.body.breed
+        breed: req.body.breed,
+        liked: true,
+        userId: req.user.id
       })
+      res.status(201).json(likedDog)
+      return
     }
-    res.status(201).json(likedDog)
-    // const user = await User.findByPk(req.user.id)
-    // if (user) {
-    //   await newLikedDog.addUser(user)
-    // } else {
-    //   res.sendStatus(404)
-    // }
+
+    await user.addLikedDog(dog)
+
+    if (dog.liked) {
+      await dog.update({liked: false})
+    } else {
+      await dog.update({liked: true})
+    }
+    res.sendStatus(200)
+    return
   } catch (error) {
     next(error)
   }

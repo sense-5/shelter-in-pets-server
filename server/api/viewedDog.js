@@ -7,19 +7,26 @@ module.exports = router
 // POST likedDog to database
 router.post('/', async (req, res, next) => {
   console.log('in view post api:', req.body)
-  //   console.log('user:', req.user.id)
   try {
-    let viewedDog = await Dog.findOrCreate({
-      where: {petFinderId: String(req.body.petFinderId), breed: req.body.breed}
-    })
+    const user = await User.findByPk(req.user.id)
 
-    res.status(201).json(viewedDog)
-    // const user = await User.findByPk(req.user.id)
-    // if (user) {
-    //   await newLikedDog.addUser(user)
-    // } else {
-    //   res.sendStatus(404)
-    // }
+    if (!user) {
+      res.status(404).json('User does not exist')
+      return
+    }
+
+    if (user) {
+      let dog = await Dog.findOrCreate({
+        where: {
+          petFinderId: String(req.body.petFinderId),
+          breed: req.body.breed,
+          userId: req.user.id
+        }
+      })
+      //   await user.addDog(dog)
+      console.log(dog)
+      res.sendStatus(201)
+    }
   } catch (error) {
     next(error)
   }
