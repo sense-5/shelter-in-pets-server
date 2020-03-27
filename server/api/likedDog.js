@@ -6,10 +6,6 @@ module.exports = router
 
 // POST likedDog to database
 router.post('/', async (req, res, next) => {
-  console.log('in post api:', req.body)
-  console.log('type user id', typeof req.user.id)
-  console.log(Object.keys(User.prototype))
-
   try {
     const user = await User.findByPk(req.user.id)
 

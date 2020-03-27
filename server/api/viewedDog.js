@@ -6,7 +6,6 @@ module.exports = router
 
 // POST likedDog to database
 router.post('/', async (req, res, next) => {
-  console.log('in view post api:', req.body)
   try {
     const user = await User.findByPk(req.user.id)
 
@@ -15,17 +14,20 @@ router.post('/', async (req, res, next) => {
       return
     }
 
-    if (user) {
-      let dog = await Dog.findOrCreate({
-        where: {
-          petFinderId: String(req.body.petFinderId),
-          breed: req.body.breed,
-          userId: req.user.id
-        }
+    let dog = await Dog.findOne({
+      where: {petFinderId: String(req.body.petFinderId), userId: req.user.id}
+    })
+
+    if (!dog) {
+      console.log('viewed dog test')
+      let viewedDog = await Dog.create({
+        petFinderId: String(req.body.petFinderId),
+        breed: req.body.breed,
+        userId: req.user.id
       })
-      //   await user.addDog(dog)
-      console.log(dog)
-      res.sendStatus(201)
+      await user.addViewedDog(viewedDog)
+      res.status(201).json(viewedDog)
+      return
     }
   } catch (error) {
     next(error)
