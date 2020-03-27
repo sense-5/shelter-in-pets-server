@@ -9,7 +9,7 @@ router.post('/', async (req, res, next) => {
   console.log('in view post api:', req.body)
   //   console.log('user:', req.user.id)
   try {
-    let viewedDog = await Dog.findOne({
+    let viewedDog = await Dog.findOrCreate({
       where: {petFinderId: String(req.body.petFinderId), breed: req.body.breed}
     })
 
