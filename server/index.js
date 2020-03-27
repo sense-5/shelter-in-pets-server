@@ -45,7 +45,12 @@ const createApp = () => {
   app.use((req, res, next) => {
     // TODO: replace * with the mobile website url for this app.
     res.append('Access-Control-Allow-Origin', ['*'])
-    console.log('test')
+    res.append('Access-Control-Allow-Credentials', 'true')
+    res.append('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
+    res.append(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+    )
     next()
   })
 

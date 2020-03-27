@@ -4,9 +4,11 @@ const LikedDogs = require('./liked_dogs')
 const ViewedDogs = require('./viewed_dogs')
 const UploadedBreeds = require('./uploaded_breeds')
 
-Dog.belongsToMany(User, {through: LikedDogs})
+Dog.belongsToMany(User, {through: LikedDogs, as: 'likedUser'})
+User.belongsToMany(Dog, {through: LikedDogs, as: 'likedDog'})
 
-User.belongsToMany(Dog, {through: ViewedDogs})
+Dog.belongsToMany(User, {through: ViewedDogs, as: 'viewedUser'})
+User.belongsToMany(Dog, {through: ViewedDogs, as: 'viewedDog'})
 
 User.hasMany(UploadedBreeds)
 UploadedBreeds.belongsTo(User)
