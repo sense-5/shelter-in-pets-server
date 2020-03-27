@@ -1,3 +1,4 @@
+// NOTE: MIGHT DELET THIS!
 const Sequelize = require('sequelize')
 const db = require('../db')
 

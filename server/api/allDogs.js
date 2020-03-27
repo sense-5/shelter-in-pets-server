@@ -17,7 +17,7 @@ router.get('/', getToken, async (req, res, next) => {
   }
 })
 
-// SINGLE DOGS ROUTE: '/api/dogs/:dogId
+// SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
 router.get('/:dogId', getToken, async (req, res, next) => {
   try {
     const {data} = await axios.get(

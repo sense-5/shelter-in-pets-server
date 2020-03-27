@@ -7,6 +7,14 @@ const Dog = db.define('dog', {
   },
   breed: {
     type: Sequelize.STRING
+  },
+  liked: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  viewed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
   }
 })
 

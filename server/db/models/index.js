@@ -5,6 +5,7 @@ const ViewedDogs = require('./viewed_dogs')
 const UploadedBreeds = require('./uploaded_breeds')
 
 Dog.belongsToMany(User, {through: LikedDogs})
+User.belongsToMany(Dog, {through: LikedDogs})
 
 User.belongsToMany(Dog, {through: ViewedDogs})
 
