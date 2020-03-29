@@ -33,6 +33,55 @@ router.get('/breeds', getToken, async (req, res, next) => {
   }
 })
 
+//GET BY SIZE: '/api/dogs/size/:size'
+//small, medium, large, xlarge
+router.get('/size/:size', getToken, async (req, res, next) => {
+  console.log('HHHEEEEEEY hit size route')
+  try {
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&size=${
+        req.params.size
+      }`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//GET BY AGE
+//baby, young, adult, senior
+router.get('/age/:age', getToken, async (req, res, next) => {
+  try {
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&age=${
+        req.params.age
+      }`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//GET BY COAT
+//short, medium, long, wire, curly, hairless
+router.get('/coat/:coat', getToken, async (req, res, next) => {
+  try {
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&coat=${
+        req.params.coat
+      }`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
 router.get('/:dogId', getToken, async (req, res, next) => {
   try {
