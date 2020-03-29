@@ -34,13 +34,16 @@ router.get('/breeds', getToken, async (req, res, next) => {
   }
 })
 
-// SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
+// // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
 // router.get('/:dogId', getToken, async (req, res, next) => {
 //   try {
-//     const {data} = await axios.get(
+//     const {
+//       data
+//     } = await axios.get(
 //       `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
 //       {headers: {Authorization: process.env.BEARER_TOKEN}}
 //     )
+//     console.log('single dog data', data)
 //     res.json(data).status(200)
 //   } catch (error) {
 //     next(error)

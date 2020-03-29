@@ -1,10 +1,13 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const ViewedDogs = db.define('ViewedDogs', {
-  petFinderId: {
+const ViewedDog = db.define('ViewedDogs', {
+  userId: {
+    type: Sequelize.STRING
+  },
+  dogId: {
     type: Sequelize.STRING
   }
 })
 
-module.exports = ViewedDogs
+module.exports = ViewedDog
