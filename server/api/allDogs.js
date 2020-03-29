@@ -33,18 +33,21 @@ router.get('/breeds', getToken, async (req, res, next) => {
   }
 })
 
-// SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
-router.get('/:dogId', getToken, async (req, res, next) => {
-  try {
-    const {data} = await axios.get(
-      `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
-      {headers: {Authorization: process.env.BEARER_TOKEN}}
-    )
-    res.json(data).status(200)
-  } catch (error) {
-    next(error)
-  }
-})
+// // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
+// router.get('/:dogId', getToken, async (req, res, next) => {
+//   try {
+//     const {
+//       data
+//     } = await axios.get(
+//       `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
+//       {headers: {Authorization: process.env.BEARER_TOKEN}}
+//     )
+//     console.log('single dog data', data)
+//     res.json(data).status(200)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 // SHOW DOGS OF A BREED ROUTE: '/api/dogs/:breed
 router.get('/:breed', getToken, async (req, res, next) => {
