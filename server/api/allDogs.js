@@ -26,7 +26,7 @@ router.get('/breeds', getToken, async (req, res, next) => {
         headers: {Authorization: process.env.BEARER_TOKEN}
       }
     )
-    console.log(data.breeds)
+
     res.status(200).json(data.breeds)
   } catch (error) {
     next(error)
