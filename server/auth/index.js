@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const {isUser} = require('../../utils')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
@@ -36,10 +37,6 @@ router.post('/logout', (req, res) => {
   req.logout()
   req.session.destroy()
   res.sendStatus(200)
-})
-
-router.get('/me', (req, res) => {
-  res.json(req.user)
 })
 
 router.use('/google', require('./google'))
