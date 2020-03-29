@@ -17,6 +17,22 @@ router.get('/', getToken, async (req, res, next) => {
   }
 })
 
+//SHOW ALL BREEDS IN PETFINDER API ROUTE: '/api/dogs/breeds'
+router.get('/breeds', getToken, async (req, res, next) => {
+  try {
+    const {data} = await axios.get(
+      'https://api.petfinder.com/v2/types/dog/breeds',
+      {
+        headers: {Authorization: process.env.BEARER_TOKEN}
+      }
+    )
+
+    res.status(200).json(data.breeds)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
 router.get('/:dogId', getToken, async (req, res, next) => {
   try {
