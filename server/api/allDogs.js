@@ -4,9 +4,10 @@ const {getToken} = require('../../utils')
 module.exports = router
 
 // ALL DOGS ROUTE: '/api/dogs
-// TODO: ask sarah about loading more dogs when making the request. Ask about SDK.
+// TODO: ask sarah about loading more dogs when making the request.
 router.get('/', getToken, async (req, res, next) => {
   try {
+    console.log('have dogs from petfinder')
     const {data} = await axios.get(
       'https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable',
       {headers: {Authorization: process.env.BEARER_TOKEN}}
@@ -18,17 +19,17 @@ router.get('/', getToken, async (req, res, next) => {
 })
 
 // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
-router.get('/:dogId', getToken, async (req, res, next) => {
-  try {
-    const {data} = await axios.get(
-      `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
-      {headers: {Authorization: process.env.BEARER_TOKEN}}
-    )
-    res.json(data).status(200)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.get('/:dogId', getToken, async (req, res, next) => {
+//   try {
+//     const {data} = await axios.get(
+//       `https://api.petfinder.com/v2/animals/${req.params.dogId}`,
+//       {headers: {Authorization: process.env.BEARER_TOKEN}}
+//     )
+//     res.json(data).status(200)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 // SHOW DOGS OF A BREED ROUTE: '/api/dogs/:breed
 router.get('/:breed', getToken, async (req, res, next) => {
