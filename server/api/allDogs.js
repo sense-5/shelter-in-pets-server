@@ -86,27 +86,14 @@ router.get('/coat/:coat', getToken, async (req, res, next) => {
 //give some sort of body in axios req from the front end
 router.get('/request', getToken, async (req, res, next) => {
   try {
-    let testBody = {
-      age: '',
-      size: ['small', 'large'],
-      coat: ''
-    }
-    const age = Array.isArray(testBody.age)
-      ? testBody.age.join(',')
-      : testBody.age
-    const size = Array.isArray(testBody.size)
-      ? testBody.size.join(',')
-      : testBody.size
-    const coat = Array.isArray(testBody.coat)
-      ? testBody.join(',')
-      : testBody.coat
-    //if any of these is empty query will still work giving all possibilities for that category
+    const age = req.query.age
+    const size = req.query.size
+    const coat = req.query.coat
 
     const {data} = await axios.get(
       `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&age=${age}&size=${size}&coat=${coat}`,
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
-
     res.json(data).status(200)
   } catch (error) {
     next(error)
