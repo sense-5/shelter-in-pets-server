@@ -33,6 +33,23 @@ router.get('/breeds', getToken, async (req, res, next) => {
   }
 })
 
+//GET specific user search request '/api/dogs/request/?age=age&size=size&coat=coat'
+router.get('/request', getToken, async (req, res, next) => {
+  try {
+    const age = req.query.age
+    const size = req.query.size
+    const coat = req.query.coat
+
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&age=${age}&size=${size}&coat=${coat}`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // // SINGLE DOGS ROUTE: '/api/dogs/:dogId (Maybe for a search??)
 // router.get('/:dogId', getToken, async (req, res, next) => {
 //   try {
