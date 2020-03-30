@@ -3,10 +3,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const LikedDog = db.define('LikedDogs', {
-  userId: {
-    type: Sequelize.STRING
-  },
-  dogId: {
+  petFinderId: {
     type: Sequelize.STRING
   }
 })
