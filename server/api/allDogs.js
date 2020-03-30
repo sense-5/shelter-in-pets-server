@@ -67,7 +67,7 @@ router.get('/request', getToken, async (req, res, next) => {
 // })
 
 // SHOW DOGS OF A BREED ROUTE: '/api/dogs/:breed
-router.get('/:breed', getToken, async (req, res, next) => {
+router.get('/type/:breed', getToken, async (req, res, next) => {
   try {
     const {data} = await axios.get(
       `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&breed=${
