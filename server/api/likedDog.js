@@ -3,16 +3,32 @@ const {Dog, User, LikedDog} = require('../db/models')
 module.exports = router
 
 // LIKED DOGS ROUTE: '/api/likedDog
-let count = 1
-// POST likedDog to database
 
+// GET likedDog
+router.get('/', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+
+    if (user) {
+      let dogs = await LikedDog.findAll({
+        where: {
+          userId: user.id
+        }
+      })
+      console.log('one liked dog:', dogs[0].dogId)
+      let dog = await Dog.findByPk(dogs[0].dogId)
+      console.log('one liked dog info', dog)
+      let petFinderId = dog.petFinderId
+      console.log('petfinderId:', petFinderId)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+// POST likedDog to database
 router.post('/', async (req, res, next) => {
   try {
-    if (count > 0) {
-      console.log('liking dog', count)
-      console.log('user id:', req.user.id, count)
-      count++
-    }
     let newLikedDog
     //find user
     const user = await User.findByPk(req.user.id)
@@ -46,7 +62,9 @@ router.post('/', async (req, res, next) => {
         res.status(201).json({liked: false})
       } else {
         //if dog has not been liked, we add the association
-        await user.addLikedDog(newLikedDog)
+        await user.addLikedDog(newLikedDog, {
+          through: {petFinderId: String(req.body.petFinderId)}
+        })
         res.status(201).json({liked: true})
       }
     } else {

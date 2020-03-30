@@ -22,7 +22,9 @@ router.post('/', async (req, res, next) => {
           breed: req.body.breed,
           userId: req.user.id
         })
-        await user.addViewedDog(viewedDog)
+        await user.addViewedDog(viewedDog, {
+          through: {petFinderId: String(req.body.petFinderId)}
+        })
         res.sendStatus(201)
       }
     } else {
