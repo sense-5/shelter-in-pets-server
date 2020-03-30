@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {Dog, User, LikedDog} = require('../db/models')
 module.exports = router
+const axios = require('axios')
 
 // LIKED DOGS ROUTE: '/api/likedDog
 
@@ -15,11 +16,18 @@ router.get('/', async (req, res, next) => {
           userId: user.id
         }
       })
-      console.log('one liked dog:', dogs[0].dogId)
-      let dog = await Dog.findByPk(dogs[0].dogId)
-      console.log('one liked dog info', dog)
-      let petFinderId = dog.petFinderId
-      console.log('petfinderId:', petFinderId)
+      let petfinderIds = dogs.map(dog => {
+        return dog.petFinderId
+      })
+      let petfinderDogs = []
+      for (let i = 0; i < petfinderIds.length; i++) {
+        let {data} = await axios.get(
+          `https://api.petfinder.com/v2/animals/${petfinderIds[i]}`,
+          {headers: {Authorization: process.env.BEARER_TOKEN}}
+        )
+        petfinderDogs.push(data.animal)
+      }
+      res.status(200).json(petfinderDogs)
     }
   } catch (error) {
     next(error)
