@@ -4,29 +4,53 @@ module.exports = router
 
 // LIKED DOGS ROUTE: '/api/viewedDog
 
-// POST likedDog to database
+// POST viewedDog to database
+// router.post('/', async (req, res, next) => {
+//   try {
+//     const user = await User.findByPk(req.user.id)
+
+//     if (!user) {
+//       res.status(404).json('User does not exist')
+//       return
+//     }
+
+//     let dog = await Dog.findOne({
+//       where: {petFinderId: String(req.body.petFinderId), userId: req.user.id}
+//     })
+
+//     if (!dog) {
+//       let viewedDog = await Dog.create({
+//         petFinderId: String(req.body.petFinderId),
+//         breed: req.body.breed,
+//         userId: req.user.id
+//       })
+//       await user.addViewedDog(viewedDog)
+//       res.status(201).json(viewedDog)
+//       return
+//     }
+//   } catch (error) {
+//     next(error)
+//   }
+// })
+
 router.post('/', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
-
-    if (!user) {
-      res.status(404).json('User does not exist')
-      return
-    }
-
-    let dog = await Dog.findOne({
-      where: {petFinderId: String(req.body.petFinderId), userId: req.user.id}
-    })
-
-    if (!dog) {
-      let viewedDog = await Dog.create({
-        petFinderId: String(req.body.petFinderId),
-        breed: req.body.breed,
-        userId: req.user.id
+    if (user) {
+      let dog = await Dog.findOne({
+        where: {petFinderId: String(req.body.petFinderId), userId: req.user.id}
       })
-      await user.addViewedDog(viewedDog)
-      res.status(201).json(viewedDog)
-      return
+      if (!dog) {
+        let viewedDog = await Dog.create({
+          petFinderId: String(req.body.petFinderId),
+          breed: req.body.breed,
+          userId: req.user.id
+        })
+        await user.addViewedDog(viewedDog)
+        res.sendStatus(201)
+      }
+    } else {
+      res.status(404).json('User does not exist')
     }
   } catch (error) {
     next(error)
