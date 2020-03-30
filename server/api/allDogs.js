@@ -4,10 +4,10 @@ const {getToken} = require('../../utils')
 module.exports = router
 
 // ALL DOGS ROUTE: '/api/dogs
-// TODO: ask sarah about loading more dogs when making the request.
+
 router.get('/', getToken, async (req, res, next) => {
   try {
-    console.log('have dogs from petfinder')
+  
     const {data} = await axios.get(
       'https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable',
       {headers: {Authorization: process.env.BEARER_TOKEN}}
