@@ -3,21 +3,6 @@ const axios = require('axios')
 const {getToken} = require('../../utils')
 module.exports = router
 
-// ALL DOGS ROUTE: '/api/dogs
-
-router.get('/', getToken, async (req, res, next) => {
-  try {
-  
-    const {data} = await axios.get(
-      'https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable',
-      {headers: {Authorization: process.env.BEARER_TOKEN}}
-    )
-    res.json(data)
-  } catch (error) {
-    next(error)
-  }
-})
-
 //SHOW ALL BREEDS IN PETFINDER API ROUTE: '/api/dogs/breeds'
 router.get('/breeds', getToken, async (req, res, next) => {
   try {
@@ -77,6 +62,22 @@ router.get('/type/:breed', getToken, async (req, res, next) => {
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
     res.json(data).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// ALL DOGS ROUTE: '/api/dogs
+
+router.get('/:page', getToken, async (req, res, next) => {
+  try {
+    const {data} = await axios.get(
+      `https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable&page=${
+        req.params.page
+      }`,
+      {headers: {Authorization: process.env.BEARER_TOKEN}}
+    )
+    res.json(data)
   } catch (error) {
     next(error)
   }
