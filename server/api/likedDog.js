@@ -1,12 +1,13 @@
 const router = require('express').Router()
 const {Dog, User, LikedDog} = require('../db/models')
+const {getToken} = require('../../utils')
 module.exports = router
 const axios = require('axios')
 
 // LIKED DOGS ROUTE: '/api/likedDog
 
 // GET likedDog
-router.get('/', async (req, res, next) => {
+router.get('/', getToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
 
@@ -50,7 +51,8 @@ router.post('/', async (req, res, next) => {
         newLikedDog = await Dog.create({
           petFinderId: String(req.body.petFinderId),
           breed: req.body.breed,
-          userId: req.user.id
+          userId: req.user.id,
+          liked: true
         })
       } else {
         newLikedDog = dog
