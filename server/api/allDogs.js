@@ -36,11 +36,11 @@ router.get('/request', getToken, async (req, res, next) => {
   }
 })
 
-// SHOW DOGS OF A BREED ROUTE: '/api/dogs/:breed
+// SHOW DOGS OF A BREED ROUTE: '/api/dogs/type/:breed
 router.get('/type/:breed', getToken, async (req, res, next) => {
   try {
     const {data} = await axios.get(
-      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&breed=${
+      `https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable&breed=${
         req.params.breed
       }`,
       {headers: {Authorization: process.env.BEARER_TOKEN}}
