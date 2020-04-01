@@ -27,7 +27,7 @@ router.get('/request', getToken, async (req, res, next) => {
     const coat = req.query.coat
 
     const {data} = await axios.get(
-      `https://api.petfinder.com/v2/animals?type=dog&status=adoptable&age=${age}&size=${size}&coat=${coat}`,
+      `https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable&age=${age}&size=${size}&coat=${coat}`,
       {headers: {Authorization: process.env.BEARER_TOKEN}}
     )
     res.json(data).status(200)
