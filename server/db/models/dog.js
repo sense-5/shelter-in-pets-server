@@ -14,7 +14,7 @@ const Dog = db.define('dog', {
   },
   liked: {
     type: Sequelize.BOOLEAN,
-    defaultVale: false
+    defaultValue: false
   }
 })
 
