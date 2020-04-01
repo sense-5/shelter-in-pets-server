@@ -20,6 +20,7 @@ router.get('/', getToken, async (req, res, next) => {
       let petfinderIds = dogs.map(dog => {
         return dog.petFinderId
       })
+
       let petfinderDogs = []
       for (let i = 0; i < petfinderIds.length; i++) {
         let {data} = await axios.get(
@@ -32,6 +33,7 @@ router.get('/', getToken, async (req, res, next) => {
         }
         petfinderDogs.push(data.animal)
       }
+
       res.status(200).json(petfinderDogs)
     }
   } catch (error) {
