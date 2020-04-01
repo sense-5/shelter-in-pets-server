@@ -11,6 +11,10 @@ const Dog = db.define('dog', {
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  liked: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 

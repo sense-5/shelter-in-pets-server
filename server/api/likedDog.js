@@ -1,12 +1,13 @@
 const router = require('express').Router()
 const {Dog, User, LikedDog} = require('../db/models')
+const {getToken} = require('../../utils')
 module.exports = router
 const axios = require('axios')
 
 // LIKED DOGS ROUTE: '/api/likedDog
 
 // GET likedDog
-router.get('/', async (req, res, next) => {
+router.get('/', getToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
 
@@ -25,9 +26,33 @@ router.get('/', async (req, res, next) => {
           `https://api.petfinder.com/v2/animals/${petfinderIds[i]}`,
           {headers: {Authorization: process.env.BEARER_TOKEN}}
         )
+        // check that dog is not a 404
+        if (data.status === 404) {
+          continue
+        }
         petfinderDogs.push(data.animal)
       }
       res.status(200).json(petfinderDogs)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/ids', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+
+    if (user) {
+      let dogs = await LikedDog.findAll({
+        where: {
+          userId: user.id
+        }
+      })
+      let petfinderIds = dogs.map(dog => {
+        return dog.petFinderId
+      })
+      res.status(200).json(petfinderIds)
     }
   } catch (error) {
     next(error)
@@ -50,7 +75,8 @@ router.post('/', async (req, res, next) => {
         newLikedDog = await Dog.create({
           petFinderId: String(req.body.petFinderId),
           breed: req.body.breed,
-          userId: req.user.id
+          userId: req.user.id,
+          liked: true
         })
       } else {
         newLikedDog = dog
@@ -67,13 +93,15 @@ router.post('/', async (req, res, next) => {
       //if dog has been liked before, we remove it
       if (likedDog) {
         await user.removeLikedDog(newLikedDog)
-        res.status(201).json({liked: false})
+        await newLikedDog.update({liked: false})
+        res.status(201).json(newLikedDog)
       } else {
         //if dog has not been liked, we add the association
         await user.addLikedDog(newLikedDog, {
           through: {petFinderId: String(req.body.petFinderId)}
         })
-        res.status(201).json({liked: true})
+        await newLikedDog.update({liked: true})
+        res.status(201).json(newLikedDog)
       }
     } else {
       res.status(404).json('User does not exist')
