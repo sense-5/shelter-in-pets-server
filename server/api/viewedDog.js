@@ -3,13 +3,8 @@ const {Dog, User} = require('../db/models')
 module.exports = router
 
 // LIKED DOGS ROUTE: '/api/viewedDog
-let count = 1
 // POST viewedDog to database
 router.post('/', async (req, res, next) => {
-  if (count > 0) {
-    console.log('viewing dog', count)
-    count++
-  }
   try {
     const user = await User.findByPk(req.user.id)
     if (user) {
