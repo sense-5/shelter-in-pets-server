@@ -23,15 +23,15 @@ router.get('/', getToken, async (req, res, next) => {
 
       let petfinderDogs = []
       for (let i = 0; i < petfinderIds.length; i++) {
-        let {data} = await axios.get(
-          `https://api.petfinder.com/v2/animals/${petfinderIds[i]}`,
-          {headers: {Authorization: process.env.BEARER_TOKEN}}
-        )
-        // check that dog is not a 404
-        if (data.status === 404) {
+        try {
+          let {data} = await axios.get(
+            `https://api.petfinder.com/v2/animals/${petfinderIds[i]}`,
+            {headers: {Authorization: process.env.BEARER_TOKEN}}
+          )
+          petfinderDogs.push(data.animal)
+        } catch (error) {
           continue
         }
-        petfinderDogs.push(data.animal)
       }
 
       res.status(200).json(petfinderDogs)
