@@ -57,7 +57,7 @@ function max3(breedsArr, breedCountsArr) {
   let top3WithCount = reverseArr.slice(0, 3)
   let final = top3WithCount
     .map(el => {
-      return el[1].toLowerCase()
+      return el[0].toLowerCase()
     })
     .join(',')
   return final
