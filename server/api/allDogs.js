@@ -52,7 +52,6 @@ router.get('/type/:breed', getToken, async (req, res, next) => {
 })
 
 // ALL DOGS ROUTE: '/api/dogs
-
 router.get('/:page', getToken, async (req, res, next) => {
   try {
     const {data} = await axios.get(
