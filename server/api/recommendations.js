@@ -8,15 +8,17 @@ module.exports = router
 router.get('/', getToken, async (req, res, next) => {
   try {
     const dogs = await Dog.findAll({where: {userId: req.user.id}})
-    console.log('these are dogs in recs: ', dogs)
+    console.log('dogs from db', dogs)
     if (dogs.length === 0) {
       const {data} = await axios.get(
         'https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable',
         {headers: {Authorization: process.env.BEARER_TOKEN}}
       )
-      console.log('await axios get random dogs: ', data)
+      console.log('random dogs', data)
       res.status(200).json(data)
-    } else {
+    }
+
+    if (dogs.length > 0) {
       const likedDogs = await Dog.findAll({
         where: {userId: req.user.id, liked: true}
       })
