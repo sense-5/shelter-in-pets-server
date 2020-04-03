@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const {Dog, User} = require('../db/models')
+const {isUser} = require('../../utils')
 module.exports = router
 
 // LIKED DOGS ROUTE: '/api/viewedDog
 // POST viewedDog to database
-router.post('/', async (req, res, next) => {
+router.post('/', isUser, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
     if (user) {
