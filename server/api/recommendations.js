@@ -1,11 +1,11 @@
 const router = require('express').Router()
 const axios = require('axios')
-const {getToken, recBreeds} = require('../../utils')
-const {Dog, User} = require('../db/models')
+const {getToken, recBreeds, isUser} = require('../../utils')
+const {Dog} = require('../db/models')
 module.exports = router
 
 // GET THE RECOMMENDED DOGS FOR A USER (based on viewed / liked)
-router.get('/', getToken, async (req, res, next) => {
+router.get('/', getToken, isUser, async (req, res, next) => {
   try {
     const dogs = await Dog.findAll({where: {userId: req.user.id}})
     if (dogs.length === 0) {

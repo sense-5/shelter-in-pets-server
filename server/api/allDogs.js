@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const axios = require('axios')
-const {getToken} = require('../../utils')
+const {getToken, isUser} = require('../../utils')
 module.exports = router
 
 //SHOW ALL BREEDS IN PETFINDER API ROUTE: '/api/dogs/breeds'
-router.get('/breeds', getToken, async (req, res, next) => {
+router.get('/breeds', getToken, isUser, async (req, res, next) => {
   try {
     const {data} = await axios.get(
       'https://api.petfinder.com/v2/types/dog/breeds',
@@ -20,7 +20,7 @@ router.get('/breeds', getToken, async (req, res, next) => {
 })
 
 //GET specific user search request '/api/dogs/request/?age=age&size=size&coat=coat'
-router.get('/request', getToken, async (req, res, next) => {
+router.get('/request', getToken, isUser, async (req, res, next) => {
   try {
     const age = req.query.age
     const size = req.query.size
@@ -37,7 +37,7 @@ router.get('/request', getToken, async (req, res, next) => {
 })
 
 // SHOW DOGS OF A BREED ROUTE: '/api/dogs/type/:breed
-router.get('/type/:breed', getToken, async (req, res, next) => {
+router.get('/type/:breed', getToken, isUser, async (req, res, next) => {
   try {
     const {data} = await axios.get(
       `https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable&breed=${
@@ -52,7 +52,7 @@ router.get('/type/:breed', getToken, async (req, res, next) => {
 })
 
 // ALL DOGS ROUTE: '/api/dogs
-router.get('/:page', getToken, async (req, res, next) => {
+router.get('/:page', getToken, isUser, async (req, res, next) => {
   try {
     const {data} = await axios.get(
       `https://api.petfinder.com/v2/animals?type=dog&limit=100&status=adoptable&page=${
